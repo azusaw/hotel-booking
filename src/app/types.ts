@@ -20,8 +20,8 @@ export interface Accommodation {
   images: Image[];
   rating: Rating;
   facilities: Facility[];
-  rooms: Room[]
-};
+  rooms: Room[];
+}
 
 export interface Type {
   id: number;
@@ -61,6 +61,14 @@ export interface Facility {
   label: string;
 }
 
+export interface Price {
+  value: number;
+  currency_id: number;
+  currency_iso_code: string;
+  currency_exponent: number;
+  price: string;
+}
+
 export interface Room {
   id: number;
   sort_order: number;
@@ -70,4 +78,6 @@ export interface Room {
   number_of_nights: number;
   type: string;
   name: string;
+  facilities?: Facility[];
+  price?: Price;
 }
