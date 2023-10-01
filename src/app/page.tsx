@@ -1,14 +1,21 @@
-import styles from './page.module.css'
-import Data from 'public/accommodation.json';
+import { NextPage } from "next";
+import styles from "./page.module.css";
+import Data from "public/accommodation.json";
+import AccommodationCard from "@/app/components/AccommodationCard";
+import { Accommodation } from "@/app/types";
 
-export default function Home() {
-  const accommodations = Data.accommodations;
+const Home: NextPage = () => {
+  const accommodations: Accommodation[] = Data.accommodations;
 
   return (
     <main className={styles.main}>
       <ul>
-        {accommodations.map((acco)=> <li>{acco.name}</li>)}
+        {accommodations.map((accommodation) => (
+          <AccommodationCard accommodation={accommodation} />
+        ))}
       </ul>
     </main>
-  )
-}
+  );
+};
+
+export default Home;
