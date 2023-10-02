@@ -91,9 +91,11 @@ const AccommodationCard = ({ accommodation }: Props) => (
           <span>{accommodation.resort.name}</span>
         </Stack>
         <Stack sx={{ fontSize: "0.9rem", marginTop: "1rem" }} spacing={2}>
-          {accommodation.rooms.map((room) => (
-            <RoomBox key={`room-${room.id}`} room={room} />
-          ))}
+          {accommodation.rooms
+            .sort((a, b) => a.sort_order - b.sort_order)
+            .map((room) => (
+              <RoomBox key={`room-${room.id}`} room={room} />
+            ))}
         </Stack>
       </Grid>
       <Grid item xs={12}>
