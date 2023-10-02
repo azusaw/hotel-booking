@@ -1,3 +1,9 @@
+export interface SearchCondition {
+  isHotel: boolean;
+  isApartment: boolean;
+  isGuestHouse: boolean;
+}
+
 export interface Availability {
   id: number;
   available: number;
