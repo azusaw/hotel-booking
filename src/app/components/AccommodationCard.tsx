@@ -80,7 +80,9 @@ const AccommodationCard = ({ accommodation }: Props) => (
                 textAlign: "center",
               }}
             >
-              {accommodation.rating.label}
+              {accommodation.rating.label == "N/A"
+                ? "-"
+                : accommodation.rating.label}
             </Box>
           </Grid>
         </Grid>
