@@ -7,10 +7,10 @@ import {
   Grid,
   Rating,
   Stack,
-  Typography,
 } from "@mui/material";
 import RoomBox from "@/app/components/RoomBox";
 import React from "react";
+import Link from "next/link";
 
 interface Props {
   accommodation: Accommodation;
@@ -97,18 +97,20 @@ const AccommodationCard = ({ accommodation }: Props) => (
         </Stack>
       </Grid>
       <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          disableElevation
-          sx={{
-            textTransform: "none",
-            color: "white",
-            float: "right",
-          }}
-        >
-          See availability
-        </Button>
+        <Link href={`/accomodation?id=${accommodation.id}`}>
+          <Button
+            variant="contained"
+            color="primary"
+            disableElevation
+            sx={{
+              textTransform: "none",
+              color: "white",
+              float: "right",
+            }}
+          >
+            See availability
+          </Button>
+        </Link>
       </Grid>
     </Grid>
   </Card>
