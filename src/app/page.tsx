@@ -2,10 +2,22 @@
 
 import { NextPage } from "next";
 import styles from "./page.module.css";
-import Data from "public/accommodation.json";
+
 import { Accommodation } from "@/app/types";
-import { createTheme, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  createTheme,
+  Pagination,
+  Stack,
+  ThemeProvider,
+} from "@mui/material";
 import AccommodationList from "@/app/components/AccommodationList";
+import {
+  getAccommodationsByPage,
+  getAccommodationsCount,
+} from "@/lib/detaController";
+import React, { useEffect, useState } from "react";
 
 const customTheme = createTheme({
   palette: {
@@ -20,12 +32,49 @@ const customTheme = createTheme({
 });
 
 const Home: NextPage = () => {
-  const accommodations: Accommodation[] = Data.accommodations;
+  const [page, setPage] = useState(0);
+  const [maxPage, setMaxPage] = useState(0);
+  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setMaxPage(Math.floor(getAccommodationsCount() / 10));
+    (async () => {
+      setIsLoading(true);
+      const accommodations = await getAccommodationsByPage(page);
+      setAccommodations(accommodations);
+      setIsLoading(false);
+    })();
+  }, [page]);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const accommodations = await getAccommodationsByPage(page);
+      setAccommodations(accommodations);
+      setIsLoading(false);
+    })();
+  }, [page]);
 
   return (
     <ThemeProvider theme={customTheme}>
       <main className={styles.main}>
-        <AccommodationList accommodations={accommodations} />
+        <Stack sx={{ display: "flex", alignItems: "center" }}>
+          <AccommodationList accommodations={accommodations} />
+          <Pagination
+            count={maxPage}
+            variant="outlined"
+            color="primary"
+            shape="rounded"
+            onChange={(_e, page) => setPage(page - 1)}
+            sx={{ m: 2 }}
+          />
+        </Stack>
+        {isLoading && (
+          <Box sx={{ display: "flex" }}>
+            <CircularProgress />
+          </Box>
+        )}
       </main>
     </ThemeProvider>
   );
