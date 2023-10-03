@@ -23,7 +23,7 @@ export const SearchConditionContext = createContext<SearchCondition>({
 
 const AccommodationSearch = () => {
   const [page, setPage] = useState(0);
-  const [maxPage, setMaxPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchCondition, setSearchCondition] = useState<SearchCondition>({
@@ -49,18 +49,15 @@ const AccommodationSearch = () => {
 
   const getAccommodations = async () => {
     setIsLoading(true);
-    const accommodations = await getAccommodationsByCondition(
-      page,
-      searchCondition,
-    );
-    setAccommodations(accommodations);
+    const res = await getAccommodationsByCondition(page, searchCondition);
+    setAccommodations(res.accommodations);
+    setTotalPage(res.totalPage);
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    setMaxPage(Math.floor(getAccommodationsCount() / 10));
-    void getAccommodations();
-  }, []);
+  // useEffect(() => {
+  //   void getAccommodations();
+  // }, []);
 
   useEffect(() => {
     void getAccommodations();
@@ -81,7 +78,7 @@ const AccommodationSearch = () => {
           <Stack sx={{ display: "flex", alignItems: "center" }}>
             <AccommodationList accommodations={accommodations} />
             <Pagination
-              count={maxPage}
+              count={totalPage}
               variant="outlined"
               color="primary"
               shape="rounded"

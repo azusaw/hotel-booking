@@ -1,3 +1,8 @@
+export interface AccommodationsRes {
+  accommodations: Accommodation[];
+  totalPage: number;
+}
+
 export interface SearchCondition {
   isHotel: boolean;
   isApartment: boolean;

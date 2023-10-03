@@ -1,19 +1,25 @@
 import Data from "public/accommodation.json";
-import { Accommodation, SearchCondition } from "@/app/types";
+import { Accommodation, AccommodationsRes, SearchCondition } from "@/app/types";
 
 const MAX_ACCOMMODATION_PER_PAGE = 10;
+
 const accommodations: Accommodation[] = Data.accommodations.sort(
   (a, b) => a.sort_order - b.sort_order,
 );
 
 export const getAccommodationsCount = (): number => accommodations.length;
 
-export const getAllAccommodation = (): Accommodation[] => accommodations;
+export const getAllAccommodation = (): AccommodationsRes => {
+  return {
+    accommodations: accommodations,
+    totalPage: Math.floor(accommodations.length / MAX_ACCOMMODATION_PER_PAGE),
+  };
+};
 
 export const getAccommodationsByCondition = (
   page: number,
   searchCondition: SearchCondition,
-): Promise<Accommodation[]> =>
+): Promise<AccommodationsRes> =>
   new Promise((resolve, reject) => {
     /* Insert delay to simulate communicating with the API */
     setTimeout(() => {
@@ -36,11 +42,13 @@ export const getAccommodationsByCondition = (
           searchCondition.keyword == ""
             ? true
             : ac.name.includes(searchCondition.keyword),
-        )
-        .slice(
+        );
+      resolve({
+        accommodations: tmp.slice(
           page * MAX_ACCOMMODATION_PER_PAGE,
           (page + 1) * MAX_ACCOMMODATION_PER_PAGE,
-        );
-      resolve(tmp);
+        ),
+        totalPage: Math.floor(tmp.length / MAX_ACCOMMODATION_PER_PAGE),
+      });
     }, 500);
   });
