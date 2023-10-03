@@ -1,9 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Accommodation, SearchCondition } from "@/app/types";
-import {
-  getAccommodationsByCondition,
-  getAccommodationsCount,
-} from "@/lib/detaController";
+import { getAccommodationsByCondition } from "@/lib/detaController";
 import {
   Backdrop,
   CircularProgress,
@@ -55,13 +52,14 @@ const AccommodationSearch = () => {
     setIsLoading(false);
   };
 
-  // useEffect(() => {
-  //   void getAccommodations();
-  // }, []);
-
   useEffect(() => {
     void getAccommodations();
-  }, [page, searchCondition]);
+  }, [page]);
+
+  useEffect(() => {
+    /* Reset page number or reload accommodations */
+    page != 0 ? setPage(0) : void getAccommodations();
+  }, [searchCondition]);
 
   return (
     <div>
@@ -78,13 +76,14 @@ const AccommodationSearch = () => {
           <Stack sx={{ display: "flex", alignItems: "center" }}>
             <AccommodationList accommodations={accommodations} />
             <Pagination
-              count={totalPage}
+              count={totalPage + 1}
               variant="outlined"
               color="primary"
               shape="rounded"
               onChange={(_e, page) => setPage(page - 1)}
               sx={{ m: 2 }}
             />
+            {`${page + 1} / ${totalPage + 1}`}
           </Stack>
         </Grid>
       </Grid>
