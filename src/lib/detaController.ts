@@ -32,6 +32,11 @@ export const getAccommodationsByCondition = (
       }
       let tmp = accommodations
         .filter((ac) => filter.includes(ac.type.name))
+        .filter((ac) =>
+          searchCondition.keyword == ""
+            ? true
+            : ac.name.includes(searchCondition.keyword),
+        )
         .slice(
           page * MAX_ACCOMMODATION_PER_PAGE,
           (page + 1) * MAX_ACCOMMODATION_PER_PAGE,

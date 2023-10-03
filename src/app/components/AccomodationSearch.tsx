@@ -18,6 +18,7 @@ export const SearchConditionContext = createContext<SearchCondition>({
   isHotel: false,
   isApartment: false,
   isGuestHouse: false,
+  keyword: "",
 });
 
 const AccommodationSearch = () => {
@@ -29,12 +30,20 @@ const AccommodationSearch = () => {
     isHotel: false,
     isApartment: false,
     isGuestHouse: false,
+    keyword: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCondition({
       ...searchCondition,
       [event.target.name]: event.target.checked,
+    });
+  };
+
+  const handleKeywordChange = (value: string) => {
+    setSearchCondition({
+      ...searchCondition,
+      keyword: value,
     });
   };
 
@@ -62,7 +71,10 @@ const AccommodationSearch = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={4}>
           <SearchConditionContext.Provider value={searchCondition}>
-            <SearchBox handleChange={handleChange} />
+            <SearchBox
+              handleFilterChange={handleFilterChange}
+              handleKeywordChange={handleKeywordChange}
+            />
           </SearchConditionContext.Provider>
         </Grid>
         <Grid item xs={12} md={8}>

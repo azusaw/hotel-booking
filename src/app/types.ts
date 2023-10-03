@@ -2,6 +2,7 @@ export interface SearchCondition {
   isHotel: boolean;
   isApartment: boolean;
   isGuestHouse: boolean;
+  keyword: string;
 }
 
 export interface Availability {

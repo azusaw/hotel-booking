@@ -1,21 +1,27 @@
-import React, { ChangeEvent, useContext } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import {
   Box,
   Checkbox,
   FormControl,
   FormControlLabel,
   FormGroup,
+  IconButton,
+  InputBase,
+  Paper,
   Stack,
   TextField,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { SearchConditionContext } from "@/app/components/AccomodationSearch";
 
 type Props = {
-  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFilterChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleKeywordChange: (value: string) => void;
 };
 
-const SearchBox = ({ handleChange }: Props) => {
+const SearchBox = ({ handleFilterChange, handleKeywordChange }: Props) => {
   const searchCondition = useContext(SearchConditionContext);
+  const [keyword, setKeyword] = useState("");
   return (
     <Box
       sx={{
@@ -26,7 +32,29 @@ const SearchBox = ({ handleChange }: Props) => {
       }}
     >
       <Stack>
-        <TextField label="Hotel name" />
+        <Paper
+          component="form"
+          sx={{
+            p: "4px",
+            display: "flex",
+            border: "2px solid #ddd",
+          }}
+          elevation={0}
+        >
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Haotel name..."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <IconButton
+            type="button"
+            sx={{ p: "10px" }}
+            onClick={(_e) => handleKeywordChange(keyword)}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
         <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
           <h4>Filter by:</h4>
           <FormGroup>
@@ -35,7 +63,7 @@ const SearchBox = ({ handleChange }: Props) => {
                 <Checkbox
                   name="isHotel"
                   checked={searchCondition.isHotel}
-                  onChange={handleChange}
+                  onChange={handleFilterChange}
                   size="small"
                 />
               }
@@ -46,7 +74,7 @@ const SearchBox = ({ handleChange }: Props) => {
                 <Checkbox
                   name="isApartment"
                   checked={searchCondition.isApartment}
-                  onChange={handleChange}
+                  onChange={handleFilterChange}
                   size="small"
                 />
               }
@@ -57,7 +85,7 @@ const SearchBox = ({ handleChange }: Props) => {
                 <Checkbox
                   name="isGuestHouse"
                   checked={searchCondition.isGuestHouse}
-                  onChange={handleChange}
+                  onChange={handleFilterChange}
                   size="small"
                 />
               }
